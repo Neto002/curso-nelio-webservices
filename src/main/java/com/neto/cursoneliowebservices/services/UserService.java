@@ -2,6 +2,7 @@ package com.neto.cursoneliowebservices.services;
 
 import com.neto.cursoneliowebservices.entities.User;
 import com.neto.cursoneliowebservices.repositories.UserRepository;
+import com.neto.cursoneliowebservices.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return this.userRepository.findById(id).get();
+        return this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
