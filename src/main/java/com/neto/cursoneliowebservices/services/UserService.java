@@ -4,6 +4,7 @@ import com.neto.cursoneliowebservices.entities.User;
 import com.neto.cursoneliowebservices.repositories.UserRepository;
 import com.neto.cursoneliowebservices.services.exceptions.DatabaseException;
 import com.neto.cursoneliowebservices.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,15 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        // Para esse caso, é melhor usar o getReferenceById ao invés do findById,
-        // visto que o primeiro método só traz a referência para ser gerenciada pelo JPA
-        User entity = this.userRepository.getReferenceById(id);
-        updateData(entity, user);
-        return this.userRepository.save(entity);
+        try {
+            // Para esse caso, é melhor usar o getReferenceById ao invés do findById,
+            // visto que o primeiro método só traz a referência para ser gerenciada pelo JPA
+            User entity = this.userRepository.getReferenceById(id);
+            updateData(entity, user);
+            return this.userRepository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User user) {
