@@ -2,7 +2,10 @@ package com.neto.cursoneliowebservices.services;
 
 import com.neto.cursoneliowebservices.entities.User;
 import com.neto.cursoneliowebservices.repositories.UserRepository;
+import com.neto.cursoneliowebservices.services.exceptions.DatabaseException;
 import com.neto.cursoneliowebservices.services.exceptions.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +32,13 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        this.userRepository.deleteById(id);
+        this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
+        try {
+            this.userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public User update(Long id, User user) {
