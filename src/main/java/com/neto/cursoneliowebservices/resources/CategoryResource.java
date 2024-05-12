@@ -1,7 +1,6 @@
 package com.neto.cursoneliowebservices.resources;
 
 import com.neto.cursoneliowebservices.entities.Category;
-import com.neto.cursoneliowebservices.entities.Order;
 import com.neto.cursoneliowebservices.services.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,6 @@
 package com.neto.cursoneliowebservices.services;
 
 import com.neto.cursoneliowebservices.entities.Category;
-import com.neto.cursoneliowebservices.entities.Order;
 import com.neto.cursoneliowebservices.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
